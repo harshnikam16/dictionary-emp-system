@@ -1,53 +1,49 @@
 # Solution
-employees = {
-    "E101": {"name": "Alice Johnson", "age": 30, "department": "HR"},
-    "E102": {"name": "Bob Smith", "age": 25, "department": "IT"}
-}
+employees = []
 
 def add_employee():
     emp_id = "E" + str(101 + len(employees))
     name = input("Name: ")
     age = int(input("Age: "))
     dept = input("Dept: ")
-    employees[emp_id] = {"name": name, "age": age, "department": dept}
+    employees.append({"id": emp_id, "name": name, "age": age, "department": dept})
     print("Employee added.")
 
 def remove_employee():
     emp_id = input("ID to remove: ")
-    if emp_id in employees:
-        del employees[emp_id]
-        print("Employee removed.")
-    else:
-        print("Not found.")
+    for emp in employees:
+        if emp["id"] == emp_id:
+            employees.remove(emp)
+            print("Employee removed.")
+            return
+    print("Not found.")
 
 def update_employee():
     emp_id = input("ID to update: ")
-    if emp_id in employees:
-        name = input("Name (leave blank to keep current): ")
-        age = input("Age (leave blank to keep current): ")
-        dept = input("Dept (leave blank to keep current): ")
-        if name:
-            employees[emp_id]["name"] = name
-        if age:
-            employees[emp_id]["age"] = int(age)
-        if dept:
-            employees[emp_id]["department"] = dept
-        print("Employee updated.")
-    else:
-        print("Not found.")
+    for emp in employees:
+        if emp["id"] == emp_id:
+            name = input("Name (leave blank to keep current): ")
+            age = input("Age (leave blank to keep current): ")
+            dept = input("Dept (leave blank to keep current): ")
+            if name:
+                emp["name"] = name
+            if age:
+                emp["age"] = int(age)
+            if dept:
+                emp["department"] = dept
+            print("Employee updated.")
+            return
+    print("Not found.")
 
 def search_employee():
     search = input("ID or Name: ")
-    found = {}
-    for k, v in employees.items():
-        if search in k or search.lower() in v["name"].lower():
-            found[k] = v
+    found = [emp for emp in employees if search in emp["id"] or search.lower() in emp["name"].lower()]
     print(found if found else "Not found.")
 
 def sort_employees():
     sort_by = input("Sort by (name/age/department): ")
-    sorted_employees = dict(sorted(employees.items(), key=lambda x: x[1][sort_by]))
-    print(sorted_employees)
+    employees.sort(key=lambda x: x[sort_by])
+    print(employees)
 
 def main():
     while True:
